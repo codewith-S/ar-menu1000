@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AR Menu</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #2ecc71;
+      font-family: Arial;
+      overflow: hidden;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h1 {
+      color: white;
+    }
+
+    .menu-card {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(15px);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 15px;
+      margin-bottom: 10px;
+    }
+
+    h2, p {
+      color: black;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 12px 18px;
+      font-size: 16px;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      background: white;
+
+      box-shadow: 
+        5px 5px 10px #bfbfbf,
+        -5px -5px 10px #ffffff;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🍽️ AR Menu</h1>
+
+<div class="menu-card" id="card">
+
+  <img id="image" src="">
+
+  <h2 id="name"></h2>
+  <p id="price"></p>
+
+  <button onclick="viewAR()">View in AR</button>
+
+</div>
+
+</div>
+
+<script>
+
+const menu = [
+  { name: "Cake", price: "₹200", model: "cake.glb", img: "https://picsum.photos/200?1", scale: "0.5 0.5 0.5" },
+  { name: "Vada Pav", price: "₹50", model: "vada.glb", img: "https://picsum.photos/200?2", scale: "1 1 1" },
+  { name: "Burger", price: "₹120", model: "food.glb", img: "https://picsum.photos/200?3", scale: "1 1 1" },
+  { name: "Coffee", price: "₹80", model: "coffee.glb", img: "https://picsum.photos/200?4", scale: "0.8 0.8 0.8" },
+  { name: "Ice Cream", price: "₹100", model: "icecream.glb", img: "https://picsum.photos/200?5", scale: "0.4 0.4 0.4" }
+];
+
+let index = 0;
+
+function updateMenu() {
+  document.getElementById("name").innerText = menu[index].name;
+  document.getElementById("price").innerText = menu[index].price;
+  document.getElementById("image").src = menu[index].img;
+}
+
+function viewAR() {
+  const item = menu[index];
+  window.location.href =
+    "ar.html?model=" + item.model +
+    "&name=" + item.name +
+    "&scale=" + item.scale;
+}
+
+// Swipe support
+let startX = 0;
+
+document.getElementById("card").addEventListener("touchstart", e => {
+  startX = e.touches[0].clientX;
+});
+
+document.getElementById("card").addEventListener("touchend", e => {
+  let endX = e.changedTouches[0].clientX;
+
+  if (endX - startX > 50) {
+    index = (index - 1 + menu.length) % menu.length;
+  } else if (startX - endX > 50) {
+    index = (index + 1) % menu.length;
+  }
+
+  updateMenu();
+});
+
+// initial load
+updateMenu();
+
+</script>
+
+</body>
+</html>
