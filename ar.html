@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AR View</title>
+
+  <!-- A-Frame -->
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+
+  <!-- AR.js -->
+  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
+</head>
+
+<body style="margin:0; overflow:hidden;">
+
+<a-scene embedded arjs>
+
+  <a-marker preset="hiro">
+
+    <a-entity 
+      id="model"
+      scale="1 1 1"
+      position="0 0.5 0"
+      rotation="0 180 0">
+    </a-entity>
+
+  </a-marker>
+
+  <a-entity camera></a-entity>
+
+</a-scene>
+
+<!-- ORDER BUTTON -->
+<button onclick="placeOrder()" 
+style="
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  padding: 15px;
+  font-size: 18px;
+  background-color: green;
+  color: white;
+  border: none;
+  border-radius: 10px;
+">
+  Order Now
+</button>
+
+<script>
+
+// Read data from URL
+const params = new URLSearchParams(window.location.search);
+const model = params.get("model");
+const name = params.get("name");
+
+// Load selected model
+document.getElementById("model").setAttribute("gltf-model", model);
+
+// Order function
+function placeOrder() {
+  alert("Order placed for " + name + "!");
+}
+
+</script>
+
+</body>
+</html>
