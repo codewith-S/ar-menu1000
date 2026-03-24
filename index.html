@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AR Menu</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background-color: #f5f5f5;
+    }
+
+    .menu-card {
+      background: white;
+      padding: 20px;
+      margin: 40px auto;
+      width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .nav-btn {
+      background-color: #ddd;
+    }
+
+    .ar-btn {
+      background-color: green;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🍽️ AR Restaurant Menu</h1>
+
+<div class="menu-card">
+  <h2 id="name"></h2>
+  <p id="price"></p>
+
+  <button class="nav-btn" onclick="prevItem()">⬅️ Prev</button>
+  <button class="nav-btn" onclick="nextItem()">Next ➡️</button>
+
+  <br><br>
+
+  <button class="ar-btn" onclick="viewAR()">View in AR</button>
+</div>
+
+<script>
+
+const menu = [
+  { name: "Cake", price: "₹200", model: "cake.glb" },
+  { name: "Vada Pav", price: "₹50", model: "vada.glb" },
+  { name: "Burger", price: "₹120", model: "food.glb" },
+  { name: "Coffee", price: "₹80", model: "coffee.glb" },
+  { name: "Ice Cream", price: "₹100", model: "icecream.glb" }
+];
+
+let index = 0;
+
+function updateMenu() {
+  document.getElementById("name").innerText = menu[index].name;
+  document.getElementById("price").innerText = menu[index].price;
+}
+
+function nextItem() {
+  index = (index + 1) % menu.length;
+  updateMenu();
+}
+
+function prevItem() {
+  index = (index - 1 + menu.length) % menu.length;
+  updateMenu();
+}
+
+function viewAR() {
+  const item = menu[index].model;
+  const name = menu[index].name;
+  window.location.href = "ar.html?model=" + item + "&name=" + name;
+}
+
+updateMenu();
+
+</script>
+
+</body>
+</html>
