@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #2ecc71;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: white;
+      text-align: center;
+    }
+
+    .card {
+      background: white;
+      padding: 15px;
+      margin: 10px;
+      border-radius: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>📊 Dashboard</h1>
+
+<div class="grid">
+
+<div class="card">
+  <h3>Total Orders</h3>
+  <p id="orders"></p>
+</div>
+
+<div class="card">
+  <h3>Total Revenue</h3>
+  <p id="revenue"></p>
+</div>
+
+<div class="card">
+  <h3>Peak Hour</h3>
+  <p id="peak"></p>
+</div>
+
+<div class="card">
+  <h3>Top Item</h3>
+  <p id="top"></p>
+</div>
+
+</div>
+
+<div class="card">
+  <h3>Orders List</h3>
+  <div id="list"></div>
+</div>
+
+<script>
+
+// AUTH CHECK
+if (localStorage.getItem("auth") !== "true") {
+  window.location.href = "login.html";
+}
+
+// GET ORDERS
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+let totalRevenue = 0;
+let itemCount = {};
+let hourCount = {};
+let html = "";
+
+orders.forEach(o => {
+  totalRevenue += o.price;
+
+  // count items
+  itemCount[o.name] = (itemCount[o.name] || 0) + 1;
+
+  // count hours
+  let hour = new Date(o.time).getHours();
+  hourCount[hour] = (hourCount[hour] || 0) + 1;
+
+  html += `
+    <div>
+      <img src="${o.img}">
+      ${o.name} - ₹${o.price}
+    </div>
+  `;
+});
+
+// total orders
+document.getElementById("orders").innerText = orders.length;
+
+// revenue
+document.getElementById("revenue").innerText = "₹" + totalRevenue;
+
+// top item
+let topItem = Object.keys(itemCount).reduce((a, b) => itemCount[a] > itemCount[b] ? a : b, "None");
+document.getElementById("top").innerText = topItem;
+
+// peak hour
+let peakHour = Object.keys(hourCount).reduce((a, b) => hourCount[a] > hourCount[b] ? a : b, "None");
+document.getElementById("peak").innerText = peakHour + ":00";
+
+// list
+document.getElementById("list").innerHTML = html;
+
+</script>
+
+</body>
+</html>
