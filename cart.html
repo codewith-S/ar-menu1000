@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cart</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #2ecc71;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      color: white;
+    }
+
+    .cart-item {
+      background: white;
+      margin: 10px auto;
+      padding: 10px;
+      border-radius: 10px;
+      width: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+    }
+
+    .controls button {
+      padding: 5px 10px;
+      margin: 2px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .remove {
+      background: red;
+      color: white;
+    }
+
+    .qty {
+      font-weight: bold;
+    }
+
+    .checkout-btn {
+      margin-top: 20px;
+      padding: 15px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🛒 Your Cart</h1>
+
+<div id="cartItems"></div>
+
+<h2 id="total"></h2>
+
+<button class="checkout-btn" onclick="checkout()">Proceed to Payment</button>
+
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// 🔥 Convert cart into quantity system
+let cartMap = {};
+
+cart.forEach(item => {
+  if (cartMap[item.name]) {
+    cartMap[item.name].qty += 1;
+  } else {
+    cartMap[item.name] = { ...item, qty: 1 };
+  }
+});
+
+// 🔄 Render Cart
+function renderCart() {
+  let html = "";
+  let total = 0;
+
+  Object.values(cartMap).forEach(item => {
+    total += item.qty * parseInt(item.price.replace("₹",""));
+
+    html += `
+      <div class="cart-item">
+        <img src="${item.img}">
+        <div>
+          <div>${item.name}</div>
+          <div>₹${item.price.replace("₹","")}</div>
+        </div>
+
+        <div class="controls">
+          <button onclick="decrease('${item.name}')">−</button>
+          <span class="qty">${item.qty}</span>
+          <button onclick="increase('${item.name}')">+</button>
+        </div>
+
+        <button class="remove" onclick="removeItem('${item.name}')">❌</button>
+      </div>
+    `;
+  });
+
+  document.getElementById("cartItems").innerHTML = html;
+  document.getElementById("total").innerText = "Total: ₹" + total;
+}
+
+// ➕ Increase
+function increase(name) {
+  cartMap[name].qty++;
+  updateStorage();
+}
+
+// ➖ Decrease
+function decrease(name) {
+  if (cartMap[name].qty > 1) {
+    cartMap[name].qty--;
+  } else {
+    delete cartMap[name];
+  }
+  updateStorage();
+}
+
+// ❌ Remove
+function removeItem(name) {
+  delete cartMap[name];
+  updateStorage();
+}
+
+// 🔄 Sync with localStorage
+function updateStorage() {
+  let newCart = [];
+
+  Object.values(cartMap).forEach(item => {
+    for (let i = 0; i < item.qty; i++) {
+      newCart.push(item);
+    }
+  });
+
+  localStorage.setItem("cart", JSON.stringify(newCart));
+  renderCart();
+}
+
+// 💳 Checkout
+function checkout() {
+  alert("Payment Successful!");
+  localStorage.removeItem("cart");
+  window.location.href = "index.html";
+}
+
+// INITIAL LOAD
+renderCart();
+
+</script>
+
+</body>
+</html>
