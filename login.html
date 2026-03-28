@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Owner Login</title>
+</head>
+
+<body style="font-family:Arial; text-align:center; background:#2ecc71;">
+
+<h1 style="color:white;">Restaurant Login</h1>
+
+<div style="background:white; padding:20px; border-radius:10px; display:inline-block;">
+  <input type="password" id="password" placeholder="Enter Password"><br><br>
+  <button onclick="login()">Login</button>
+</div>
+
+<script>
+const OWNER_PASSWORD = "1234"; // change later
+
+function login() {
+  const input = document.getElementById("password").value;
+
+  if (input === OWNER_PASSWORD) {
+    localStorage.setItem("auth", "true");
+    window.location.href = "dashboard.html";
+  } else {
+    alert("Wrong password!");
+  }
+}
+</script>
+
+</body>
+</html>
