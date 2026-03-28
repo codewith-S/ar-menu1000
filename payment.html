@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Payment</title>
+</head>
+
+<body style="font-family: Arial; text-align:center;">
+
+<h1>💳 Payment</h1>
+
+<h2 id="amount"></h2>
+
+<button onclick="pay()">Pay Now</button>
+
+<script>
+
+// GET TOTAL FROM URL
+const params = new URLSearchParams(window.location.search);
+const total = params.get("total");
+
+// SHOW AMOUNT
+document.getElementById("amount").innerText = "Pay ₹" + total;
+
+
+// ✅ PAYMENT FUNCTION
+function pay() {
+
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+  cart.forEach(item => {
+    orders.push({
+      name: item.name,
+      price: Number(item.price.replace("₹","")),
+      time: new Date().toISOString(),
+      img: item.img
+    });
+  });
+
+  localStorage.setItem("orders", JSON.stringify(orders));
+
+  // 🔥 DEBUG
+  alert("Orders Saved: " + orders.length);
+
+  localStorage.removeItem("cart");
+
+  alert("Payment Successful!");
+
+  // 🔥 Go to owner dashboard flow
+  window.location.href = "login.html";
+}
+
+</script>
+
+</body>
+</html>
