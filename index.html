@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AR Menu</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #2ecc71;
+      font-family: Arial;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h1 {
+      color: white;
+    }
+
+    .menu-card {
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(15px);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    img {
+      width: 150px;
+      height: 150px;
+      border-radius: 15px;
+      object-fit: cover;
+    }
+
+    h2, p {
+      color: black;
+    }
+
+    button {
+      margin: 8px;
+      padding: 12px 18px;
+      border-radius: 15px;
+      border: none;
+      background: white;
+      cursor: pointer;
+      box-shadow: 5px 5px 10px #bfbfbf,
+                  -5px -5px 10px #ffffff;
+    }
+
+    .nav-btn {
+      font-size: 20px;
+      padding: 10px 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🍽️ AR Menu</h1>
+
+<div class="menu-card">
+
+  <img id="image">
+
+  <h2 id="name"></h2>
+  <p id="price"></p>
+
+  <!-- NAV BUTTONS -->
+  <button class="nav-btn" onclick="prevItem()">⬅️</button>
+  <button class="nav-btn" onclick="nextItem()">➡️</button>
+
+  <br>
+
+  <button onclick="viewAR()">View in AR</button>
+  <button onclick="addToCart()">Add to Cart</button>
+
+  <br>
+
+  <button onclick="goToCart()">🛒 View Cart</button>
+
+</div>
+
+</div>
+
+<script>
+
+const menu = [
+  { name: "Cake", price: "₹200", model: "cake.glb", img: "cake.jpg", scale: "0.08 0.08 0.08", rotation: "0 0 0" },
+
+  { name: "Vada Pav", price: "₹50", model: "vada.glb", img: "vada.jpg", scale: "1 1 1", rotation: "0 0 0" },
+
+  { name: "Burger", price: "₹120", model: "food.glb", img: "burger.jpg", scale: "0.07 0.07 0.07", rotation: "0 0 0" },
+
+  { name: "Coffee", price: "₹80", model: "coffee.glb", img: "coffee.jpg", scale: "5 5 5", rotation: "0 0 0" },
+
+  { name: "Ice Cream", price: "₹100", model: "icecream.glb", img: "icecream.jpg", scale: "0.07 0.07 0.07", rotation: "0 0 0" }
+];
+
+let index = 0;
+
+function updateMenu() {
+  document.getElementById("name").innerText = menu[index].name;
+  document.getElementById("price").innerText = menu[index].price;
+  document.getElementById("image").src = menu[index].img;
+}
+
+// BUTTON NAVIGATION
+function nextItem() {
+  index = (index + 1) % menu.length;
+  updateMenu();
+}
+
+function prevItem() {
+  index = (index - 1 + menu.length) % menu.length;
+  updateMenu();
+}
+
+// AR
+function viewAR() {
+  const item = menu[index];
+  window.location.href =
+    "ar.html?model=" + item.model +
+    "&name=" + item.name +
+    "&scale=" + item.scale +
+    "&rotation=" + item.rotation;
+}
+
+// CART
+function addToCart() {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart.push(menu[index]);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  alert(menu[index].name + " added!");
+}
+
+function goToCart() {
+  window.location.href = "cart.html";
+}
+
+// INITIAL LOAD
+updateMenu();
+
+</script>
+
+</body>
+</html>
