@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Owner Panel</title>
+
+  <style>
+    body {
+      margin:0;
+      font-family:Arial;
+    }
+
+    /* TOP BAR */
+    .topbar {
+      background:#2ecc71;
+      padding:10px;
+      text-align:center;
+    }
+
+    .topbar button {
+      margin:5px;
+      padding:10px;
+      border:none;
+      border-radius:10px;
+      background:white;
+      cursor:pointer;
+    }
+
+    iframe {
+      width:100%;
+      height:90vh;
+      border:none;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- TOP NAV -->
+<div class="topbar">
+  <button onclick="loadPage('dashboard.html')">📊 Dashboard</button>
+  <button onclick="loadPage('index.html')">🍽️ Menu</button>
+  <button onclick="logout()">🚪 Logout</button>
+</div>
+
+<!-- CONTENT -->
+<iframe id="frame" src="dashboard.html"></iframe>
+
+<script>
+
+// AUTH CHECK
+if (localStorage.getItem("auth") !== "true") {
+  window.location.href = "login.html";
+}
+
+// SWITCH PAGES
+function loadPage(page) {
+  document.getElementById("frame").src = page;
+}
+
+// LOGOUT
+function logout() {
+  localStorage.removeItem("auth");
+  window.location.href = "login.html";
+}
+
+</script>
+
+</body>
+</html>
