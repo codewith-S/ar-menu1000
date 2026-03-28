@@ -76,7 +76,7 @@
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-// 🔥 Convert cart into quantity system
+// Convert cart to quantity system
 let cartMap = {};
 
 cart.forEach(item => {
@@ -87,7 +87,7 @@ cart.forEach(item => {
   }
 });
 
-// 🔄 Render Cart
+// Render Cart
 function renderCart() {
   let html = "";
   let total = 0;
@@ -118,13 +118,13 @@ function renderCart() {
   document.getElementById("total").innerText = "Total: ₹" + total;
 }
 
-// ➕ Increase
+// Increase
 function increase(name) {
   cartMap[name].qty++;
   updateStorage();
 }
 
-// ➖ Decrease
+// Decrease
 function decrease(name) {
   if (cartMap[name].qty > 1) {
     cartMap[name].qty--;
@@ -134,13 +134,13 @@ function decrease(name) {
   updateStorage();
 }
 
-// ❌ Remove
+// Remove
 function removeItem(name) {
   delete cartMap[name];
   updateStorage();
 }
 
-// 🔄 Sync with localStorage
+// Sync storage
 function updateStorage() {
   let newCart = [];
 
@@ -154,14 +154,12 @@ function updateStorage() {
   renderCart();
 }
 
-// 💳 Checkout
+// 🔥 FIXED CHECKOUT (GO TO PAYMENT PAGE)
 function checkout() {
-  alert("Payment Successful!");
-  localStorage.removeItem("cart");
-  window.location.href = "index.html";
+  window.location.href = "payment.html";
 }
 
-// INITIAL LOAD
+// Load
 renderCart();
 
 </script>
