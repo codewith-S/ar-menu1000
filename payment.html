@@ -10,20 +10,17 @@
 
 <h2 id="amount"></h2>
 
-<button onclick="pay()">Pay Now</button>
+<button id="payBtn">Pay Now</button>
 
 <script>
 
-// GET TOTAL FROM URL
-const params = new URLSearchParams(window.location.search);
-const total = params.get("total");
-
 // SHOW AMOUNT
-document.getElementById("amount").innerText = "Pay ₹" + total;
+document.getElementById("amount").innerText = "Pay ₹100";
 
+// 🔥 SAFE EVENT LISTENER (BETTER THAN onclick)
+document.getElementById("payBtn").addEventListener("click", function () {
 
-// ✅ PAYMENT FUNCTION
-function pay() {
+  alert("Button Clicked"); // TEST
 
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   let orders = JSON.parse(localStorage.getItem("orders")) || [];
@@ -39,16 +36,15 @@ function pay() {
 
   localStorage.setItem("orders", JSON.stringify(orders));
 
-  // 🔥 DEBUG
   alert("Orders Saved: " + orders.length);
 
   localStorage.removeItem("cart");
 
   alert("Payment Successful!");
 
-  // 🔥 Go to owner dashboard flow
   window.location.href = "login.html";
-}
+
+});
 
 </script>
 
