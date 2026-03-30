@@ -78,16 +78,16 @@
   .lemon-top {
     top: 50% !important;
     left: 50% !important;
-    bottom: auto !important;
-    right: auto !important;
+    bottom: 70% !important;
+    right: 80% !important;
     transform: translate(120%, 30%) !important;
   }
 
   .lemon-bottom {
     top: 50% !important;
     left: 50% !important;
-    bottom: auto !important;
-    right: auto !important;
+    bottom: 70% !important;
+    right: 80% !important;
     transform: translate(-85%, -10%) rotate(180deg) !important;
   }
 }
@@ -197,7 +197,9 @@
       <button class="secondary" onclick="nextItem()">➡️</button>
     </div>
 
-    <button class="cart-btn" onclick="goToCart()">🛒 View Cart</button>
+   <button class="cart-btn" onclick="goToCart()">
+  🛒 Cart <span id="cartCount">(0)</span>
+</button>
 
   </div>
 
@@ -244,13 +246,21 @@ function addToCart() {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   cart.push(menu[index]);
   localStorage.setItem("cart", JSON.stringify(cart));
+
+  updateCartCount(); // 🔥 update live
+
   alert(menu[index].name + " added!");
 }
 
 function goToCart() {
   window.location.href = "cart.html";
+  
 }
-
+  
+function updateCartCount() {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  document.getElementById("cartCount").innerText = "(" + cart.length + ")";
+}
 updateMenu();
 
 </script>
