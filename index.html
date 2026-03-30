@@ -16,7 +16,7 @@
       overflow: hidden;
     }
 
-    /* Background glow */
+    /* 🔥 Background glow */
     body::before {
       content: "";
       position: absolute;
@@ -41,15 +41,44 @@
       filter: blur(50px);
     }
 
+    /* 🍋 LEMONS BEHIND CARD */
+    .lemon {
+      position: absolute;
+      width: 260px;
+      opacity: 0.08;
+      z-index: 0;
+      pointer-events: none;
+      filter: blur(2px);
+      animation: float 7s ease-in-out infinite;
+    }
+
+    /* TOP LEFT (near card) */
+    .lemon-top {
+      top: 10%;
+      left: 30%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* BOTTOM RIGHT (diagonal) */
+    .lemon-bottom {
+      bottom: 10%;
+      right: 30%;
+      transform: translate(50%, 50%) rotate(180deg);
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+      100% { transform: translateY(0px); }
+    }
+
     .container {
       width: 90%;
       max-width: 350px;
       z-index: 1;
     }
 
-    /* CARD */
     .menu-card {
-      position: relative;
       background: rgba(255,255,255,0.9);
       backdrop-filter: blur(10px);
       padding: 20px;
@@ -57,40 +86,11 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
       text-align: center;
       transition: 0.3s;
-      overflow: visible; /* ✅ FIXED */
     }
 
-    /* Hover effect */
     .menu-card:hover {
       transform: translateY(-5px) scale(1.02);
       box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-    }
-
-    /* 🍋 LEMONS */
-    .lemon {
-      position: absolute;
-      width: 220px; /* fixed size */
-      opacity: 0.08;
-      z-index: 0;
-      pointer-events: none;
-      filter: blur(2px);
-    }
-
-    .lemon-top {
-      top: -80px;
-      left: -80px;
-    }
-
-    .lemon-bottom {
-      bottom: -80px;
-      right: -80px;
-      transform: rotate(180deg);
-    }
-
-    /* Content above lemons */
-    .menu-card > * {
-      position: relative;
-      z-index: 1;
     }
 
     .food-img {
@@ -157,13 +157,13 @@
 
 <body>
 
+<!-- 🍋 BEHIND CARD -->
+<img src="lemon.png" class="lemon lemon-top">
+<img src="lemon.png" class="lemon lemon-bottom">
+
 <div class="container">
 
   <div class="menu-card">
-
-    <!-- 🍋 LEMONS -->
-    <img src="lemon.png" class="lemon lemon-top">
-    <img src="lemon.png" class="lemon lemon-bottom">
 
     <img id="image" class="food-img">
 
