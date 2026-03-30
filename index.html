@@ -5,7 +5,10 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
+  <style> 
+    * {
+  box-sizing: border-box;
+}
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
@@ -73,13 +76,12 @@
     }
 
     /* 📱 CONTAINER */
-    .container {
-      width: 100%;
-      max-width: 600px;
-      padding: 15px;
-      position: relative;
-      z-index: 1; /* 🔥 above lemons */
-    }
+   .container {
+  width: 100%;
+  max-width: 600px;
+  padding: 15px;
+  box-sizing: border-box; /* ✅ FIX */
+}
 
     /* 📱 CARD */
     .menu-card {
