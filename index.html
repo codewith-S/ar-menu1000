@@ -4,131 +4,108 @@
   <title>AR Menu</title>
 
   <style>
-  body {
-  margin: 0;
-  height: 100vh;
-  font-family: 'Segoe UI', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  /* Gradient background */
-  background: linear-gradient(135deg, #27ae60, #2ecc71);
-  overflow: hidden;
-}
-    .clear-btn {
-  background: #e74c3c;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  margin-bottom: 15px;
-}
-
-.clear-btn:hover {
-  background: #c0392b;
-}
-
-/* 🔥 Leaf background effect */
-body::before {
-  content: "";
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  background: rgba(255,255,255,0.1);
-  border-radius: 50%;
-  top: -80px;
-  left: -80px;
-  filter: blur(40px);
-}
-
-body::after {
-  content: "";
-  position: absolute;
-  width: 250px;
-  height: 250px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 50%;
-  bottom: -60px;
-  right: -60px;
-  filter: blur(40px);
-}
-
-/* Container */
-.container {
-  width: 90%;
-  max-width: 350px;
-  z-index: 1;
-}
-
-/* Glass card */
-.menu-card {
-  background: rgba(255,255,255,0.9);
-  backdrop-filter: blur(10px);
-  padding: 20px;
-  border-radius: 25px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  text-align: center;
-}
-
-/* Image */
-img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 20px;
-}
-
-/* Text */
-h2 {
-  margin: 10px 0;
-}
-
-.price {
-  color: #27ae60;
-  font-weight: bold;
-  font-size: 20px;
-}
-
-/* Buttons */
-button {
-  width: 100%;
-  margin-top: 10px;
-  padding: 12px;
-  border: none;
-  border-radius: 12px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-/* Primary */
-.primary {
-  background: #27ae60;
-  color: white;
-}
-
-/* Secondary */
-.secondary {
-  background: #ecf0f1;
-}
-
-/* Floating cart */
-.cart-float {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: black;
-  color: white;
-  border-radius: 50%;
-  padding: 15px;
-  font-size: 18px;
-  
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #27ae60, #2ecc71);
+      position: relative;
+      overflow: hidden;
     }
 
-    .nav-btn {
+    /* 🔥 White glow */
+    body::before {
+      content: "";
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      top: -80px;
+      left: -80px;
+      filter: blur(50px);
+    }
+
+    body::after {
+      content: "";
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      bottom: -80px;
+      right: -80px;
+      filter: blur(50px);
+    }
+
+    .container {
+      width: 90%;
+      max-width: 350px;
+      z-index: 1;
+    }
+
+    .menu-card {
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 20px;
+    }
+
+    h2 {
+      margin: 10px 0;
+    }
+
+    .price {
       font-size: 20px;
-      padding: 10px 20px;
+      font-weight: bold;
+      color: #27ae60;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: #27ae60;
+      color: white;
+    }
+
+    .secondary {
+      background: #ecf0f1;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .cart-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: black;
+      color: white;
+      border-radius: 50%;
+      padding: 15px;
+      font-size: 18px;
     }
   </style>
 </head>
@@ -137,57 +114,34 @@ button {
 
 <div class="container">
 
-<h1>🍽️ AR Menu</h1>
+  <div class="menu-card">
 
-<div class="menu-card">
+    <img id="image">
 
-  <img id="image">
+    <h2 id="name"></h2>
+    <p class="price" id="price"></p>
 
-  <h2 id="name"></h2>
-  <p id="price"></p>
+    <button class="primary" onclick="viewAR()">View in AR</button>
+    <button class="secondary" onclick="addToCart()">Add to Cart</button>
 
-  <!-- NAV BUTTONS -->
-  <button class="nav-btn" onclick="prevItem()">⬅️</button>
-  <button class="nav-btn" onclick="nextItem()">➡️</button>
+    <div class="nav">
+      <button class="secondary" onclick="prevItem()">⬅️</button>
+      <button class="secondary" onclick="nextItem()">➡️</button>
+    </div>
 
-  <br>
-
-  <button onclick="viewAR()">View in AR</button>
-  <button onclick="addToCart()">Add to Cart</button>
-
-  <br>
-
-  <button onclick="goToCart()">🛒 View Cart</button>
+  </div>
 
 </div>
 
-</div>
+<button class="cart-float" onclick="goToCart()">🛒</button>
 
 <script>
 
-function clearOrders() {
-
-  let confirmClear = confirm("Are you sure you want to delete all orders?");
-
-  if (confirmClear) {
-    localStorage.removeItem("orders");
-
-    alert("All orders cleared!");
-
-    // Refresh dashboard
-    location.reload();
-  }
-}
-  
 const menu = [
   { name: "Cake", price: "₹200", model: "cake.glb", img: "cake.jpg", scale: "0.08 0.08 0.08", rotation: "0 0 0" },
-
   { name: "Vada Pav", price: "₹50", model: "vada.glb", img: "vada.jpg", scale: "1 1 1", rotation: "0 0 0" },
-
   { name: "Burger", price: "₹120", model: "food.glb", img: "burger.jpg", scale: "0.07 0.07 0.07", rotation: "0 0 0" },
-
   { name: "Coffee", price: "₹80", model: "coffee.glb", img: "coffee.jpg", scale: "5 5 5", rotation: "0 0 0" },
-
   { name: "Ice Cream", price: "₹100", model: "icecream.glb", img: "icecream.jpg", scale: "0.07 0.07 0.07", rotation: "0 0 0" }
 ];
 
@@ -199,7 +153,6 @@ function updateMenu() {
   document.getElementById("image").src = menu[index].img;
 }
 
-// BUTTON NAVIGATION
 function nextItem() {
   index = (index + 1) % menu.length;
   updateMenu();
@@ -210,7 +163,6 @@ function prevItem() {
   updateMenu();
 }
 
-// AR
 function viewAR() {
   const item = menu[index];
   window.location.href =
@@ -220,7 +172,6 @@ function viewAR() {
     "&rotation=" + item.rotation;
 }
 
-// CART
 function addToCart() {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   cart.push(menu[index]);
@@ -232,7 +183,6 @@ function goToCart() {
   window.location.href = "cart.html";
 }
 
-// INITIAL LOAD
 updateMenu();
 
 </script>
