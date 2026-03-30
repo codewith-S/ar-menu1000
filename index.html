@@ -97,10 +97,12 @@
       100% { transform: translateY(0px); }
     }
 
-    .container {
-      width: 90%;
-      max-width: 350px;
-      z-index: 1;
+   .container {
+  width: 90%;
+  max-width: 350px;
+  z-index: 1;
+  position: relative; /* 🔥 IMPORTANT */
+}
     }
 
     .menu-card {
@@ -182,13 +184,16 @@
 
 <body>
 
-<!-- 🍋 BEHIND CARD -->
-<img src="lemon.png" class="lemon lemon-top">
-<img src="lemon.png" class="lemon lemon-bottom">
 
 <div class="container">
 
+  <!-- 🍋 MOVE HERE -->
+  <img src="lemon.png" class="lemon lemon-top">
+  <img src="lemon.png" class="lemon lemon-bottom">
+
   <div class="menu-card">
+    ...
+  </div>
 
     <img id="image" class="food-img">
 
