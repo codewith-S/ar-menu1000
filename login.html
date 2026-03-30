@@ -1,29 +1,146 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login</title>
+  <title>Owner Login</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #27ae60, #2ecc71);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* 🍋 CENTER LEMON BG */
+    .lemon-bg {
+      position: absolute;
+      width: 450px;
+      opacity: 0.08;
+      z-index: 0;
+      filter: blur(2px);
+    }
+
+    /* ✨ GLASS CARD */
+    .login-card {
+      width: 90%;
+      max-width: 380px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 25px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+      text-align: center;
+      z-index: 1;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      margin-bottom: 15px;
+      background: #ecf0f1;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .login-btn {
+      background: #27ae60;
+      color: white;
+    }
+
+    .login-btn:hover {
+      background: #219150;
+    }
+
+    .forgot {
+      margin-top: 12px;
+      color: #555;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .forgot:hover {
+      text-decoration: underline;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #777;
+    }
+
+  </style>
 </head>
 
-<body style="background:#2ecc71; text-align:center; font-family:Arial;">
+<body>
 
-<h1 style="color:white;">Owner Login</h1>
+<!-- 🍋 CENTER LEMON -->
+<img src="lemon.png" class="lemon-bg">
 
-<input type="password" id="pass" placeholder="Enter Password"><br><br>
-<button onclick="login()">Login</button>
+<div class="login-card">
+
+  <h2>🔐 Owner Login</h2>
+
+  <input type="password" id="passkey" placeholder="Enter Passkey">
+
+  <button class="login-btn" onclick="login()">Login</button>
+
+  <div class="forgot" onclick="forgotPasskey()">
+    Forgot Passkey?
+  </div>
+
+  <div id="hint" class="hint"></div>
+
+</div>
 
 <script>
-const PASSWORD = "1234";
+
+const correctPass = "1234"; // 🔥 change this later
 
 function login() {
-  const val = document.getElementById("pass").value;
+  const input = document.getElementById("passkey").value;
 
-  if (val === PASSWORD) {
+  if (input === correctPass) {
     localStorage.setItem("auth", "true");
-    window.location.href = "owner.html"; // 🔥 important
+    window.location.href = "dashboard.html";
   } else {
-    alert("Wrong password");
+    alert("Wrong Passkey!");
   }
 }
+
+function forgotPasskey() {
+  document.getElementById("hint").innerText =
+    "Hint: Default passkey is 1234";
+}
+
 </script>
 
 </body>
