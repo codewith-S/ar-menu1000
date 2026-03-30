@@ -9,6 +9,40 @@
       background: linear-gradient(135deg, #27ae60, #2ecc71);
       margin: 0;
       padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* 🔥 TOP WHITE GLOW */
+    body::before {
+      content: "";
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      top: -80px;
+      left: -80px;
+      filter: blur(50px);
+    }
+
+    /* 🔥 BOTTOM WHITE GLOW */
+    body::after {
+      content: "";
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      bottom: -80px;
+      right: -80px;
+      filter: blur(50px);
+    }
+
+    /* 🔥 ENSURE CONTENT ABOVE GLOW */
+    h1, .grid, .list-card, .clear-btn {
+      position: relative;
+      z-index: 1;
     }
 
     h1 {
@@ -60,6 +94,8 @@
       background: white;
       border-radius: 20px;
       padding: 15px;
+      position: relative;
+      z-index: 1;
     }
 
     .list-item {
@@ -123,12 +159,12 @@
 
 <script>
 
-// 🔐 AUTH CHECK
+// AUTH CHECK
 if (localStorage.getItem("auth") !== "true") {
   window.location.href = "login.html";
 }
 
-// 🗑️ CLEAR ORDERS
+// CLEAR ORDERS
 function clearOrders() {
   let confirmClear = confirm("Delete all orders?");
   if (confirmClear) {
@@ -138,7 +174,7 @@ function clearOrders() {
   }
 }
 
-// 📦 GET ORDERS
+// GET ORDERS
 let orders = JSON.parse(localStorage.getItem("orders")) || [];
 
 let totalRevenue = 0;
@@ -146,7 +182,6 @@ let itemCount = {};
 let hourCount = {};
 let html = "";
 
-// 📊 PROCESS DATA
 orders.forEach(o => {
   totalRevenue += o.price;
 
@@ -163,27 +198,22 @@ orders.forEach(o => {
   `;
 });
 
-// 📊 TOTAL ORDERS
+// UPDATE UI
 document.getElementById("orders").innerText = orders.length;
-
-// 💰 REVENUE
 document.getElementById("revenue").innerText = "₹" + totalRevenue;
 
-// 🍽️ TOP ITEM
 let topItem = orders.length
   ? Object.keys(itemCount).reduce((a, b) => itemCount[a] > itemCount[b] ? a : b)
   : "None";
 
 document.getElementById("top").innerText = topItem;
 
-// ⏰ PEAK HOUR
 let peakHour = orders.length
   ? Object.keys(hourCount).reduce((a, b) => hourCount[a] > hourCount[b] ? a : b)
   : "--";
 
 document.getElementById("peak").innerText = peakHour + ":00";
 
-// 📃 ORDER LIST
 if (orders.length === 0) {
   document.getElementById("list").innerHTML =
     "<p class='empty'>No orders yet</p>";
