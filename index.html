@@ -75,27 +75,22 @@
     opacity: 0.3;
   }
 
-  /* 🔥 FIXED: top-left near card */
   .lemon-top {
-    top: 10%;
-    left: 100%;
-    transform: translate(240%, 230%);
+    top: 50% !important;
+    left: 50% !important;
+    bottom: auto !important;
+    right: auto !important;
+    transform: translate(-120%, -130%) !important;
   }
 
-  /* 🔥 FIXED: bottom-right near card */
   .lemon-bottom {
-    bottom: 5%;
-  right: 135%;
-    transform: translate(85%, 110%) rotate(180deg);
+    top: 50% !important;
+    left: 50% !important;
+    bottom: auto !important;
+    right: auto !important;
+    transform: translate(85%, 110%) rotate(180deg) !important;
   }
 }
-    
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-12px); }
-      100% { transform: translateY(0px); }
-    }
-
 .container {
   width: 90%;
   max-width: 350px;
