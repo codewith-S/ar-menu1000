@@ -43,48 +43,49 @@
 
     /* 🍋 LEMONS BEHIND CARD */
     
+
 /* 🍋 BASE */
 .lemon {
   position: absolute;
-  width: 220px;
-  opacity: 0.08;
+  width: 240px;
+  opacity: 0.25; /* 🔥 increased visibility (not 1.0, that looks bad) */
   z-index: 0;
   pointer-events: none;
-  filter: blur(2px);
-  animation: float 7s ease-in-out infinite;
+  filter: blur(1.5px);
+  animation: float 6s ease-in-out infinite;
 }
 
-/* 🎯 CENTER-BASED POSITION (WORKS BOTH MOBILE + DESKTOP) */
+/* 🎯 CENTER BASED POSITION */
 
-/* top-left of card */
+/* FIXED TOP LEFT (now visible) */
 .lemon-top {
   top: 50%;
   left: 50%;
-  transform: translate(-180px, -220px);
+  transform: translate(-140px, -160px);
 }
 
-/* bottom-right of card */
+/* BOTTOM RIGHT */
 .lemon-bottom {
   top: 50%;
   left: 50%;
-  transform: translate(120px, 150px) rotate(180deg);
+  transform: translate(120px, 120px) rotate(180deg);
 }
 
-/* 📱 MOBILE ADJUSTMENT */
+/* 📱 MOBILE */
 @media (max-width: 600px) {
 
   .lemon {
-    width: 160px;
+    width: 180px;
+    opacity: 0.3;
   }
 
   .lemon-top {
-    transform: translate(-130px, -170px);
+    transform: translate(-110px, -130px);
   }
 
   .lemon-bottom {
-    transform: translate(80px, 110px) rotate(180deg);
+    transform: translate(80px, 90px) rotate(180deg);
   }
-}
 }
     
     @keyframes float {
