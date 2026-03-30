@@ -16,7 +16,7 @@
       overflow: hidden;
     }
 
-    /* 🔥 Background glow */
+    /* Background glow */
     body::before {
       content: "";
       position: absolute;
@@ -47,7 +47,7 @@
       z-index: 1;
     }
 
-    /* 🍋 CARD */
+    /* CARD */
     .menu-card {
       position: relative;
       background: rgba(255,255,255,0.9);
@@ -57,44 +57,37 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
       text-align: center;
       transition: 0.3s;
-      overflow: hidden;
+      overflow: visible; /* ✅ FIXED */
     }
 
-    /* 🔥 Hover effect */
+    /* Hover effect */
     .menu-card:hover {
       transform: translateY(-5px) scale(1.02);
       box-shadow: 0 20px 40px rgba(0,0,0,0.25);
     }
 
-    /* 🍋 LEMONS (ATTACHED TO CARD) */
+    /* 🍋 LEMONS */
     .lemon {
       position: absolute;
-      width: 300px;
+      width: 220px; /* fixed size */
       opacity: 0.08;
       z-index: 0;
       pointer-events: none;
-      filter: blur(3px);
-      animation: float 6s ease-in-out infinite;
+      filter: blur(2px);
     }
 
     .lemon-top {
-      top: -120px;
-      left: -120px;
+      top: -80px;
+      left: -80px;
     }
 
     .lemon-bottom {
-      bottom: -120px;
-      right: -120px;
+      bottom: -80px;
+      right: -80px;
       transform: rotate(180deg);
     }
 
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-      100% { transform: translateY(0px); }
-    }
-
-    /* KEEP CONTENT ABOVE LEMONS */
+    /* Content above lemons */
     .menu-card > * {
       position: relative;
       z-index: 1;
@@ -168,7 +161,7 @@
 
   <div class="menu-card">
 
-    <!-- 🍋 LEMONS INSIDE CARD -->
+    <!-- 🍋 LEMONS -->
     <img src="lemon.png" class="lemon lemon-top">
     <img src="lemon.png" class="lemon lemon-bottom">
 
