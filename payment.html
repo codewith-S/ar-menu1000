@@ -1,39 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Payment</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: linear-gradient(135deg, #27ae60, #2ecc71);
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 20px;
+      text-align: center;
+      width: 300px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    #amount {
+      font-size: 22px;
+      color: #27ae60;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: #27ae60;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #219150;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1>💳 Payment</h1>
+  <p>Complete your order</p>
+
+  <h2 id="amount">Loading...</h2>
+
+  <button onclick="pay()">Pay Now</button>
+</div>
+
 <script>
 
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+document.addEventListener("DOMContentLoaded", function () {
 
-let total = 0;
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-cart.forEach(item => {
-  total += parseInt(item.price.replace("₹",""));
-});
-
-// 🔥 SHOW CORRECT AMOUNT
-document.getElementById("amount").innerText = "Pay ₹" + total;
-
-
-// PAYMENT
-function pay() {
-
-  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+  let total = 0;
 
   cart.forEach(item => {
-    orders.push({
-      name: item.name,
-      price: Number(item.price.replace("₹","")),
-      time: new Date().toISOString(),
-      img: item.img
-    });
+    total += parseInt(item.price.replace("₹",""));
   });
 
-  localStorage.setItem("orders", JSON.stringify(orders));
+  // ✅ Show total amount
+  document.getElementById("amount").innerText = "Pay ₹" + total;
 
-  localStorage.removeItem("cart");
+  // PAYMENT FUNCTION
+  window.pay = function () {
 
-  alert("Payment Successful!");
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
 
-  // ✅ Redirect to menu (not owner login)
-  window.location.href = "index.html";
-}
+    cart.forEach(item => {
+      orders.push({
+        name: item.name,
+        price: Number(item.price.replace("₹","")),
+        time: new Date().toISOString(),
+        img: item.img
+      });
+    });
+
+    localStorage.setItem("orders", JSON.stringify(orders));
+
+    localStorage.removeItem("cart");
+
+    alert("Payment Successful!");
+
+    // ✅ Redirect back to menu
+    window.location.href = "index.html";
+  };
+
+});
 
 </script>
+
+</body>
+</html>
