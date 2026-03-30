@@ -1,28 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Payment</title>
-</head>
-
-<body style="font-family: Arial; text-align:center;">
-
-<h1>💳 Payment Updated</h1>
-
-<h2 id="amount"></h2>
-
-<button id="payBtn">Pay Now</button>
-
 <script>
 
-// SHOW AMOUNT
-document.getElementById("amount").innerText = "Pay ₹100";
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-// 🔥 SAFE EVENT LISTENER (BETTER THAN onclick)
-document.getElementById("payBtn").addEventListener("click", function () {
+let total = 0;
 
-  alert("Button Clicked"); // TEST
+cart.forEach(item => {
+  total += parseInt(item.price.replace("₹",""));
+});
 
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+// 🔥 SHOW CORRECT AMOUNT
+document.getElementById("amount").innerText = "Pay ₹" + total;
+
+
+// PAYMENT
+function pay() {
+
   let orders = JSON.parse(localStorage.getItem("orders")) || [];
 
   cart.forEach(item => {
@@ -36,17 +28,12 @@ document.getElementById("payBtn").addEventListener("click", function () {
 
   localStorage.setItem("orders", JSON.stringify(orders));
 
-  alert("Orders Saved: " + orders.length);
-
   localStorage.removeItem("cart");
 
   alert("Payment Successful!");
 
-  window.location.href = "login.html";
-
-});
+  // ✅ Redirect to menu (not owner login)
+  window.location.href = "index.html";
+}
 
 </script>
-
-</body>
-</html>
