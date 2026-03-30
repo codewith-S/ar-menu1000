@@ -26,8 +26,8 @@
     /* 🍋 CENTER LEMON BG */
     .lemon-bg {
       position: absolute;
-      width: 450px;
-      opacity: 0.08;
+      width: 650px;
+      opacity: 0.18;
       z-index: 0;
       filter: blur(2px);
     }
@@ -130,7 +130,7 @@ function login() {
 
   if (input === correctPass) {
     localStorage.setItem("auth", "true");
-    window.location.href = "dashboard.html";
+    window.location.href = "dashboard.html"; // ✅ correct
   } else {
     alert("Wrong Passkey!");
   }
