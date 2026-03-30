@@ -1,69 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Owner Panel</title>
-
-  <style>
-    body {
-      margin:0;
-      font-family:Arial;
+  /* 🍋 LEMONS (BEHIND CARD) */
+    .lemon {
+      position: absolute;
+      width: 180px;
+      opacity: 0.25;
+      filter: blur(1.5px);
+      z-index: 0; /* 🔥 behind */
+      animation: float 6s ease-in-out infinite;
     }
 
-    /* TOP BAR */
-    .topbar {
-      background:#2ecc71;
-      padding:10px;
-      text-align:center;
+    .lemon-top {
+      top: 18%;
+      left: 8%;
     }
 
-    .topbar button {
-      margin:5px;
-      padding:10px;
-      border:none;
-      border-radius:10px;
-      background:white;
-      cursor:pointer;
+    .lemon-bottom {
+      bottom: 18%;
+      right: 8%;
+      transform: rotate(180deg);
     }
 
-    iframe {
-      width:100%;
-      height:90vh;
-      border:none;
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-14px); }
+      100% { transform: translateY(0px); }
     }
-  </style>
-</head>
-
-<body>
-
-<!-- TOP NAV -->
-<div class="topbar">
-  <button onclick="loadPage('dashboard.html')">📊 Dashboard</button>
-  <button onclick="loadPage('index.html')">🍽️ Menu</button>
-  <button onclick="logout()">🚪 Logout</button>
-</div>
-
-<!-- CONTENT -->
-<iframe id="frame" src="dashboard.html"></iframe>
-
-<script>
-
-// AUTH CHECK
-if (localStorage.getItem("auth") !== "true") {
-  window.location.href = "login.html";
-}
-
-// SWITCH PAGES
-function loadPage(page) {
-  document.getElementById("frame").src = page;
-}
-
-// LOGOUT
-function logout() {
-  localStorage.removeItem("auth");
-  window.location.href = "login.html";
-}
-
-</script>
-
-</body>
-</html>
