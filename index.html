@@ -41,6 +41,34 @@
       filter: blur(50px);
     }
 
+    /* 🍋 Lemon styling */
+    .lemon {
+      position: absolute;
+      width: 180px;
+      opacity: 0.15;
+      z-index: 0;
+      pointer-events: none;
+      filter: blur(2px);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .lemon-top {
+      top: -40px;
+      left: -40px;
+    }
+
+    .lemon-bottom {
+      bottom: -40px;
+      right: -40px;
+      transform: rotate(180deg);
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
     .container {
       width: 90%;
       max-width: 350px;
@@ -54,9 +82,17 @@
       border-radius: 25px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
       text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    img {
+    /* 🔥 Hover effect */
+    .menu-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    }
+
+    /* ONLY food image */
+    .food-img {
       width: 100%;
       height: 180px;
       object-fit: cover;
@@ -81,6 +117,7 @@
       border-radius: 12px;
       font-weight: bold;
       cursor: pointer;
+      transition: 0.3s;
     }
 
     .primary {
@@ -88,35 +125,47 @@
       color: white;
     }
 
+    .primary:hover {
+      background: #219150;
+    }
+
     .secondary {
       background: #ecf0f1;
     }
 
-    .nav {
-      display: flex;
-      justify-content: space-between;
+    .secondary:hover {
+      background: #dfe6e9;
     }
 
-    .cart-float {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
+    .nav {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* 🔥 Cart button inside card */
+    .cart-btn {
       background: black;
       color: white;
-      border-radius: 50%;
-      padding: 15px;
-      font-size: 18px;
     }
+
+    .cart-btn:hover {
+      background: #333;
+    }
+
   </style>
 </head>
 
 <body>
 
+<!-- 🍋 FIXED POSITION -->
+<img src="lemon.png" class="lemon lemon-top">
+<img src="lemon.png" class="lemon lemon-bottom">
+
 <div class="container">
 
   <div class="menu-card">
 
-    <img id="image">
+    <img id="image" class="food-img">
 
     <h2 id="name"></h2>
     <p class="price" id="price"></p>
@@ -129,11 +178,12 @@
       <button class="secondary" onclick="nextItem()">➡️</button>
     </div>
 
+    <!-- 🔥 CART BUTTON INSIDE -->
+    <button class="cart-btn" onclick="goToCart()">🛒 View Cart</button>
+
   </div>
 
 </div>
-
-<button class="cart-float" onclick="goToCart()">🛒</button>
 
 <script>
 
