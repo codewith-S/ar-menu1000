@@ -42,30 +42,51 @@
     }
 
     /* 🍋 LEMONS BEHIND CARD */
-    .lemon {
-      position: absolute;
-      width: 260px;
-      opacity: 0.08;
-      z-index: 0;
-      pointer-events: none;
-      filter: blur(2px);
-      animation: float 7s ease-in-out infinite;
-    }
+    
+/* 🍋 RESPONSIVE LEMONS */
+.lemon {
+  position: absolute;
+  width: 220px;
+  opacity: 0.08;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(2px);
+  animation: float 7s ease-in-out infinite;
+}
 
-    /* TOP LEFT (near card) */
-    .lemon-top {
-      top: 10%;
-      left: 30%;
-      transform: translate(-50%, -50%);
-    }
+/* 💻 DESKTOP */
+.lemon-top {
+  top: 15%;
+  left: 35%;
+  transform: translate(-50%, -50%);
+}
 
-    /* BOTTOM RIGHT (diagonal) */
-    .lemon-bottom {
-      bottom: 10%;
-      right: 30%;
-      transform: translate(50%, 50%) rotate(180deg);
-    }
+.lemon-bottom {
+  bottom: 15%;
+  right: 35%;
+  transform: translate(50%, 50%) rotate(180deg);
+}
 
+/* 📱 MOBILE */
+@media (max-width: 600px) {
+
+  .lemon {
+    width: 160px;
+  }
+
+  .lemon-top {
+    top: 25%;
+    left: 10%;
+    transform: none;
+  }
+
+  .lemon-bottom {
+    bottom: 20%;
+    right: 10%;
+    transform: rotate(180deg);
+  }
+}
+    
     @keyframes float {
       0% { transform: translateY(0px); }
       50% { transform: translateY(-12px); }
