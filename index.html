@@ -72,19 +72,22 @@
 @media (max-width: 600px) {
 
   .lemon {
-    width: 160px;
+    width: 170px;
+    opacity: 0.3;
   }
 
+  /* top-left hugging card */
   .lemon-top {
-    top: -85%;
-    left: -60%;
-    transform: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-105%, -125%);
   }
 
+  /* bottom-right hugging card */
   .lemon-bottom {
-    bottom: -80%;
-    right: -60%;
-    transform: rotate(180deg);
+    top: 50%;
+    left: 50%;
+    transform: translate(75%, 95%) rotate(180deg);
   }
 }
     
