@@ -76,18 +76,18 @@
     opacity: 0.3;
   }
 
-  /* 🔥 FIXED: top-left near card */
+  /* top-left hugging card */
   .lemon-top {
     top: 50%;
     left: 50%;
-    transform: translate(-120%, -130%);
+    transform: translate(100%, 125%);
   }
 
-  /* 🔥 FIXED: bottom-right near card */
+  /* bottom-right hugging card */
   .lemon-bottom {
     top: 50%;
     left: 50%;
-    transform: translate(85%, 110%) rotate(180deg);
+    transform: translate(75%, 95%) rotate(180deg);
   }
 }
     
@@ -97,14 +97,12 @@
       100% { transform: translateY(0px); }
     }
 
-   .container {
+.container {
   width: 90%;
   max-width: 350px;
   z-index: 1;
   position: relative; /* 🔥 IMPORTANT */
 }
-    }
-
     .menu-card {
       background: rgba(255,255,255,0.9);
       backdrop-filter: blur(10px);
@@ -184,16 +182,13 @@
 
 <body>
 
+<!-- 🍋 BEHIND CARD -->
+<img src="lemon.png" class="lemon lemon-top">
+<img src="lemon.png" class="lemon lemon-bottom">
 
 <div class="container">
 
-  <!-- 🍋 MOVE HERE -->
-  <img src="lemon.png" class="lemon lemon-top">
-  <img src="lemon.png" class="lemon lemon-bottom">
-
   <div class="menu-card">
-    ...
-  </div>
 
     <img id="image" class="food-img">
 
