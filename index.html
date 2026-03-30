@@ -43,7 +43,7 @@
 
     /* 🍋 LEMONS BEHIND CARD */
     
-/* 🍋 RESPONSIVE LEMONS */
+/* 🍋 BASE */
 .lemon {
   position: absolute;
   width: 220px;
@@ -54,20 +54,23 @@
   animation: float 7s ease-in-out infinite;
 }
 
-/* 💻 DESKTOP */
+/* 🎯 CENTER-BASED POSITION (WORKS BOTH MOBILE + DESKTOP) */
+
+/* top-left of card */
 .lemon-top {
-  top: 15%;
-  left: 35%;
-  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-180px, -220px);
 }
 
+/* bottom-right of card */
 .lemon-bottom {
-  bottom: 15%;
-  right: 35%;
-  transform: translate(50%, 50%) rotate(180deg);
+  top: 50%;
+  left: 50%;
+  transform: translate(120px, 150px) rotate(180deg);
 }
 
-/* 📱 MOBILE */
+/* 📱 MOBILE ADJUSTMENT */
 @media (max-width: 600px) {
 
   .lemon {
@@ -75,16 +78,13 @@
   }
 
   .lemon-top {
-    top: 25%;
-    left: 10%;
-    transform: none;
+    transform: translate(-130px, -170px);
   }
 
   .lemon-bottom {
-    bottom: 20%;
-    right: 10%;
-    transform: rotate(180deg);
+    transform: translate(80px, 110px) rotate(180deg);
   }
+}
 }
     
     @keyframes float {
