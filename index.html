@@ -73,12 +73,13 @@
       100% { transform: translateY(0px); }
     }
 
-    /* 📦 CONTAINER */
-    .container {
-      width: 95%;
-      max-width: 800px; /* 🔥 50% bigger */
-      z-index: 1;
-    }
+   .container {
+  width: 95%;
+  max-width: 800px;
+  margin: auto;           /* ✅ ensures horizontal centering */
+  display: flex;          /* ✅ NEW */
+  justify-content: center;/* ✅ CENTER CARD */
+}
 
     /* 🧊 CARD */
     .menu-card {
