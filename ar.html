@@ -6,6 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
@@ -16,21 +20,35 @@
       height: 100vh;
       color: white;
       text-align: center;
+      overflow: hidden;
     }
 
     .container {
-      max-width: 400px;
+      max-width: 420px;
+      width: 90%;
+      z-index: 1;
+    }
+
+    h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .info {
+      opacity: 0.9;
+      font-size: 15px;
     }
 
     .btn {
-      margin-top: 20px;
-      padding: 16px;
-      border-radius: 12px;
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 14px;
       border: none;
-      font-size: 16px;
+      font-size: 17px;
       font-weight: bold;
       cursor: pointer;
       width: 100%;
+      transition: 0.3s;
     }
 
     .ar-btn {
@@ -38,9 +56,46 @@
       color: #27ae60;
     }
 
+    .ar-btn:hover {
+      transform: scale(1.03);
+    }
+
     .order-btn {
       background: black;
       color: white;
+    }
+
+    /* 🔥 Loader Overlay */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 10;
+    }
+
+    .loader p {
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid white;
+      border-top: 5px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
 
   </style>
@@ -51,7 +106,7 @@
 <div class="container">
 
   <h2 id="title">Loading...</h2>
-  <p>Tap below to view in AR</p>
+  <p class="info">Move your phone to detect surface</p>
 
   <button class="btn ar-btn" onclick="launchAR()">
     🚀 View in AR
@@ -61,6 +116,12 @@
     🛒 Order Now
   </button>
 
+</div>
+
+<!-- 🔥 LOADER -->
+<div class="loader" id="loader">
+  <div class="spinner"></div>
+  <p>Launching AR...</p>
 </div>
 
 <script>
@@ -73,29 +134,38 @@ const name = params.get("name");
 
 document.getElementById("title").innerText = name || "Item";
 
-// 🚀 MARKERLESS AR FUNCTION
+// 🚀 MARKERLESS AR (PREMIUM FLOW)
 function launchAR() {
+
+  const loader = document.getElementById("loader");
+  loader.style.display = "flex";
 
   const modelUrl = window.location.origin + "/" + model;
 
   const isAndroid = /Android/i.test(navigator.userAgent);
   const isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-  if (isAndroid) {
+  setTimeout(() => {
 
-    // 🔥 Google Scene Viewer
-    const url = `https://arvr.google.com/scene-viewer/1.0?file=${modelUrl}&mode=ar_only&resizable=true`;
+    if (isAndroid) {
 
-    window.location.href = url;
+      // 🔥 Scene Viewer with surface detection
+      const url = `https://arvr.google.com/scene-viewer/1.0?file=${modelUrl}&mode=ar_only&resizable=true`;
 
-  } else if (isiOS) {
+      window.location.href = url;
 
-    // 🍎 iPhone (needs USDZ)
-    alert("iPhone requires USDZ model");
+    } else if (isiOS) {
 
-  } else {
-    alert("AR not supported on this device");
-  }
+      alert("iPhone requires USDZ model");
+
+    } else {
+
+      alert("AR not supported on this device");
+
+    }
+
+  }, 1200); // smooth delay
+
 }
 
 // 🛒 ORDER
