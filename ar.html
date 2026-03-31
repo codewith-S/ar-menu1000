@@ -140,8 +140,8 @@ function launchAR() {
   const loader = document.getElementById("loader");
   loader.style.display = "flex";
 
-  const modelUrl = window.location.origin + "/" + model;
-
+const modelUrl = model;
+  
   const isAndroid = /Android/i.test(navigator.userAgent);
   const isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
