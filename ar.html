@@ -3,39 +3,65 @@
 <head>
   <title>AR View</title>
 
-  <!-- A-Frame -->
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- AR.js -->
-  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #27ae60, #2ecc71);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 400px;
+    }
+
+    .btn {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 12px;
+      border: none;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .ar-btn {
+      background: white;
+      color: #27ae60;
+    }
+
+    .order-btn {
+      background: black;
+      color: white;
+    }
+
+  </style>
 </head>
 
-<body style="margin:0; overflow:hidden;">
+<body>
 
-<a-scene embedded arjs>
+<div class="container">
 
-  <a-marker preset="hiro">
-    <a-entity id="model" position="0 0.5 0"></a-entity>
-  </a-marker>
+  <h2 id="title">Loading...</h2>
+  <p>Tap below to view in AR</p>
 
-  <a-entity camera></a-entity>
+  <button class="btn ar-btn" onclick="launchAR()">
+    🚀 View in AR
+  </button>
 
-</a-scene>
+  <button class="btn order-btn" onclick="placeOrder()">
+    🛒 Order Now
+  </button>
 
-<!-- ORDER BUTTON -->
-<button onclick="placeOrder()" 
-style="
-  position:absolute;
-  bottom:20px;
-  left:20px;
-  padding:15px;
-  background:white;
-  border-radius:15px;
-  box-shadow: 5px 5px 10px #bfbfbf,
-              -5px -5px 10px #ffffff;
-">
-  Order Now
-</button>
+</div>
 
 <script>
 
@@ -44,27 +70,37 @@ const params = new URLSearchParams(window.location.search);
 
 const model = params.get("model");
 const name = params.get("name");
-const scale = params.get("scale");
-const rotation = params.get("rotation");
 
-// LOAD MODEL
-const el = document.getElementById("model");
+document.getElementById("title").innerText = name || "Item";
 
-el.setAttribute("gltf-model", model);
-el.setAttribute("scale", scale || "1 1 1");
-el.setAttribute("rotation", rotation || "0 0 0");
+// 🚀 MARKERLESS AR FUNCTION
+function launchAR() {
 
-// FIX POSITION
-el.addEventListener("model-loaded", () => {
-  el.object3D.position.set(0, 0.5, 0);
-});
+  const modelUrl = window.location.origin + "/" + model;
 
+  const isAndroid = /Android/i.test(navigator.userAgent);
+  const isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-// ✅ UPDATED ORDER FUNCTION (NO DATABASE SAVE HERE)
+  if (isAndroid) {
+
+    // 🔥 Google Scene Viewer
+    const url = `https://arvr.google.com/scene-viewer/1.0?file=${modelUrl}&mode=ar_only&resizable=true`;
+
+    window.location.href = url;
+
+  } else if (isiOS) {
+
+    // 🍎 iPhone (needs USDZ)
+    alert("iPhone requires USDZ model");
+
+  } else {
+    alert("AR not supported on this device");
+  }
+}
+
+// 🛒 ORDER
 function placeOrder() {
   alert(name + " added! Proceed to cart.");
-
-  // Redirect to cart instead of saving order
   window.location.href = "cart.html";
 }
 
