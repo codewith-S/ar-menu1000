@@ -3,21 +3,26 @@
 <head>
   <title>AR Menu</title>
 
-  <style>
+  <style> 
+    html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
     * {
       box-sizing: border-box;
     }
 
-    body {
+    body { 
       margin: 0;
-      height: 100vh;
+      min-height: 100vh;
       font-family: 'Segoe UI', sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       background: linear-gradient(135deg, #27ae60, #2ecc71);
       position: relative;
-      overflow: hidden;
+     overflow-x: hidden;
     }
 
     /* 🔥 Background glow */
@@ -58,12 +63,12 @@
 
     .lemon-top {
       top: 18%;
-      left: 10%;
+      left: 5%;
     }
 
     .lemon-bottom {
       bottom: 18%;
-      right: 10%;
+      right: 5%;
       transform: rotate(180deg);
     }
 
