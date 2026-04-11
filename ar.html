@@ -1,19 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>WebXR AR</title>
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/loaders/GLTFLoader.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/webxr/ARButton.js"></script>
 
   <style>
     body {
       margin: 0;
       overflow: hidden;
-      font-family: sans-serif;
+      font-family: 'Segoe UI', sans-serif;
     }
 
     #overlay {
@@ -23,15 +18,31 @@
       text-align: center;
       color: white;
       z-index: 2;
+      font-size: 16px;
+    }
+
+    #error {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      color: red;
+      z-index: 2;
+      font-size: 14px;
     }
   </style>
 </head>
 
 <body>
 
-<div id="overlay">Move phone to detect surface</div>
+<div id="overlay">📱 Move phone to detect surface</div>
+<div id="error"></div>
 
-<script>
+<script type="module">
+
+import * as THREE from 'https://unpkg.com/three@0.152.2/build/three.module.js';
+import { ARButton } from 'https://unpkg.com/three@0.152.2/examples/jsm/webxr/ARButton.js';
+import { GLTFLoader } from 'https://unpkg.com/three@0.152.2/examples/jsm/loaders/GLTFLoader.js';
 
 const params = new URLSearchParams(window.location.search);
 const modelUrl = params.get("model");
@@ -44,17 +55,20 @@ animate();
 
 function init() {
 
+  // Scene
   scene = new THREE.Scene();
 
-  camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.01, 20);
+  // Camera
+  camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
 
+  // Renderer
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.xr.enabled = true;
 
   document.body.appendChild(renderer.domElement);
 
-  // AR Button
+  // AR Button (starts AR)
   document.body.appendChild(ARButton.createButton(renderer, {
     requiredFeatures: ['hit-test']
   }));
@@ -64,16 +78,37 @@ function init() {
   scene.add(light);
 
   // Load Model
-  const loader = new THREE.GLTFLoader();
+  if (!modelUrl) {
+    document.getElementById("error").innerText = "❌ Model URL missing";
+    return;
+  }
 
-  loader.load(modelUrl, function(gltf) {
+  const loader = new GLTFLoader();
 
-    const model = gltf.scene;
-    model.scale.set(0.3, 0.3, 0.3);
-    model.position.set(0, 0, -1);
+  loader.load(
+    modelUrl,
+    function (gltf) {
 
-    scene.add(model);
+      const model = gltf.scene;
 
+      model.scale.set(0.3, 0.3, 0.3);
+      model.position.set(0, 0, -1);
+
+      scene.add(model);
+
+    },
+    undefined,
+    function (error) {
+      document.getElementById("error").innerText = "❌ Failed to load model";
+      console.error(error);
+    }
+  );
+
+  // Resize fix
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
   });
 
 }
