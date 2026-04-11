@@ -3,10 +3,17 @@
 <head>
   <title>Cart</title>
 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial;
-      background: #2ecc71;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #27ae60, #2ecc71);
       margin: 0;
       padding: 20px;
       text-align: center;
@@ -14,51 +21,98 @@
 
     h1 {
       color: white;
+      margin-bottom: 20px;
     }
 
     .cart-item {
-      background: white;
-      margin: 10px auto;
-      padding: 10px;
-      border-radius: 10px;
-      width: 300px;
+      background: rgba(255,255,255,0.95);
+      margin: 12px auto;
+      padding: 12px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 420px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
 
     img {
-      width: 50px;
-      height: 50px;
-      border-radius: 8px;
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+
+    .info {
+      flex: 1;
+      text-align: left;
+      margin-left: 10px;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
     }
 
     .controls button {
-      padding: 5px 10px;
+      padding: 6px 10px;
       margin: 2px;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
-    }
-
-    .remove {
-      background: red;
-      color: white;
-    }
-
-    .qty {
       font-weight: bold;
     }
 
-    .checkout-btn {
-      margin-top: 20px;
+    .controls button:hover {
+      opacity: 0.8;
+    }
+
+    .qty {
+      margin: 0 6px;
+      font-weight: bold;
+    }
+
+    .remove {
+      background: #e74c3c;
+      color: white;
+      margin-left: 5px;
+    }
+
+    .total-box {
+      background: white;
       padding: 15px;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 420px;
+      margin: 20px auto;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .checkout-btn {
+      width: 100%;
+      max-width: 420px;
+      padding: 16px;
       font-size: 18px;
       border: none;
-      border-radius: 10px;
-      background: white;
+      border-radius: 14px;
+      background: black;
+      color: white;
       cursor: pointer;
     }
+
+    .checkout-btn:hover {
+      background: #333;
+    }
+
+    .empty {
+      color: white;
+      margin-top: 40px;
+      font-size: 18px;
+    }
+
   </style>
 </head>
 
@@ -68,15 +122,16 @@
 
 <div id="cartItems"></div>
 
-<h2 id="total"></h2>
+<div id="totalBox" class="total-box"></div>
 
 <button class="checkout-btn" onclick="checkout()">Proceed to Payment</button>
 
 <script>
 
+// LOAD CART
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-// Convert cart to quantity system
+// Convert to quantity system
 let cartMap = {};
 
 cart.forEach(item => {
@@ -87,18 +142,30 @@ cart.forEach(item => {
   }
 });
 
-// Render Cart
+// RENDER CART
 function renderCart() {
+
   let html = "";
   let total = 0;
 
-  Object.values(cartMap).forEach(item => {
+  const items = Object.values(cartMap);
+
+  if (items.length === 0) {
+    document.getElementById("cartItems").innerHTML =
+      "<p class='empty'>Your cart is empty 🛒</p>";
+    document.getElementById("totalBox").innerText = "";
+    return;
+  }
+
+  items.forEach(item => {
+
     total += item.qty * parseInt(item.price.replace("₹",""));
 
     html += `
       <div class="cart-item">
-        <img src="${item.img}">
-        <div>
+        <img src="${item.img}" loading="lazy">
+
+        <div class="info">
           <div>${item.name}</div>
           <div>₹${item.price.replace("₹","")}</div>
         </div>
@@ -115,16 +182,16 @@ function renderCart() {
   });
 
   document.getElementById("cartItems").innerHTML = html;
-  document.getElementById("total").innerText = "Total: ₹" + total;
+  document.getElementById("totalBox").innerText = "Total: ₹" + total;
 }
 
-// Increase
+// INCREASE
 function increase(name) {
   cartMap[name].qty++;
   updateStorage();
 }
 
-// Decrease
+// DECREASE
 function decrease(name) {
   if (cartMap[name].qty > 1) {
     cartMap[name].qty--;
@@ -134,13 +201,13 @@ function decrease(name) {
   updateStorage();
 }
 
-// Remove
+// REMOVE
 function removeItem(name) {
   delete cartMap[name];
   updateStorage();
 }
 
-// Sync storage
+// SYNC STORAGE
 function updateStorage() {
   let newCart = [];
 
@@ -154,12 +221,12 @@ function updateStorage() {
   renderCart();
 }
 
-// 🔥 FIXED CHECKOUT (GO TO PAYMENT PAGE)
+// CHECKOUT
 function checkout() {
   window.location.href = "payment.html";
 }
 
-// Load
+// LOAD PAGE
 renderCart();
 
 </script>
