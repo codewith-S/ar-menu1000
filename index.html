@@ -195,8 +195,9 @@
       <button class="secondary" onclick="nextItem()">➡️</button>
     </div>
 
-    <button class="cart-btn" onclick="goToCart()">🛒 View Cart</button>
-
+   <button class="cart-btn" onclick="goToCart()">
+  🛒 Cart <span id="cartCount">(0)</span>
+</button>
   </div>
 
 </div>
@@ -240,16 +241,26 @@ function viewAR() {
 
 function addToCart() {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  cart.push(menu[index]);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  alert(menu[index].name + " added!");
-}
 
+  cart.push(menu[index]);
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  updateCartCount(); // 🔥 IMPORTANT (this was missing)
+
+  alert(menu[index].name + " added!");
+  function updateCartCount() {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  document.getElementById("cartCount").innerText = "(" + cart.length + ")";
+}
+}
+  
 function goToCart() {
   window.location.href = "cart.html";
 }
-
-updateMenu();
+  
+  updateMenu();
+updateCartCount();
 
 </script>
 
