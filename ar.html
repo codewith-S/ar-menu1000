@@ -1,116 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>WebXR AR</title>
+  <title>AR View</title>
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- 🔥 Model Viewer -->
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      overflow: hidden;
       font-family: 'Segoe UI', sans-serif;
-    }
-
-    #overlay {
-      position: absolute;
-      top: 20px;
-      width: 100%;
-      text-align: center;
+      background: linear-gradient(135deg, #27ae60, #2ecc71);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
       color: white;
-      z-index: 2;
-      font-size: 16px;
     }
 
-    #error {
-      position: absolute;
-      bottom: 20px;
-      width: 100%;
-      text-align: center;
-      color: red;
-      z-index: 2;
-      font-size: 14px;
+    h2 {
+      margin-bottom: 10px;
+      font-size: 26px;
     }
+
+    .viewer {
+      width: 90%;
+      max-width: 420px;
+      height: 420px;
+      border-radius: 20px;
+      overflow: hidden;
+      background: white;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    model-viewer {
+      width: 100%;
+      height: 100%;
+      background: white;
+    }
+
+    .btn {
+      margin-top: 15px;
+      padding: 15px;
+      width: 90%;
+      max-width: 420px;
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .ar-btn {
+      background: white;
+      color: #27ae60;
+    }
+
+    .order-btn {
+      background: black;
+      color: white;
+    }
+
   </style>
 </head>
 
 <body>
 
-<div id="overlay">📱 Move phone to detect surface</div>
-<div id="error"></div>
+<h2 id="title">Loading...</h2>
 
-<script type="module">
+<div class="viewer">
+  <model-viewer
+    id="viewer"
+    src=""
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    camera-controls
+    auto-rotate
+    shadow-intensity="1"
+    exposure="1"
+  >
+  </model-viewer>
+</div>
 
-import * as THREE from 'https://unpkg.com/three@0.152.2/build/three.module.js';
-import { ARButton } from 'https://unpkg.com/three@0.152.2/examples/jsm/webxr/ARButton.js';
-import { GLTFLoader } from 'https://unpkg.com/three@0.152.2/examples/jsm/loaders/GLTFLoader.js';
+<button class="btn ar-btn" onclick="openAR()">
+  🚀 View in AR
+</button>
 
+<button class="btn order-btn" onclick="placeOrder()">
+  🛒 Order Now
+</button>
+
+<script>
+
+// GET DATA
 const params = new URLSearchParams(window.location.search);
-const modelUrl = params.get("model");
+const model = params.get("model");
+const name = params.get("name");
 
-let camera, scene, renderer;
-let controller;
+// SET TITLE
+document.getElementById("title").innerText = name || "Item";
 
-init();
-animate();
+// SET MODEL
+const viewer = document.getElementById("viewer");
+viewer.src = model;
 
-function launchAR() {
-
-  const modelUrl = model;
-
-  const isAndroid = /Android/i.test(navigator.userAgent);
-
-  // 🔥 Check WebXR support
-  if (navigator.xr) {
-
-    navigator.xr.isSessionSupported('immersive-ar').then((supported) => {
-
-      if (supported) {
-        // ✅ Use WebXR
-        window.location.href = "webxr.html?model=" + modelUrl;
-      } else {
-        fallbackAR();
-      }
-
-    });
-
-  } else {
-    fallbackAR();
-  }
-
-  function fallbackAR() {
-
-    if (isAndroid) {
-
-      // 🔥 Scene Viewer fallback
-      const url =
-        "https://arvr.google.com/scene-viewer/1.0?file=" +
-        encodeURIComponent(modelUrl) +
-        "&mode=ar_only&resizable=true";
-
-      window.location.href = url;
-
-    } else {
-      alert("AR not supported on this device");
-    }
-
-  }
-
-}
-  // Resize fix
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
-
+// OPEN AR
+function openAR() {
+  viewer.activateAR(); // 🔥 auto chooses best AR
 }
 
-function animate() {
-  renderer.setAnimationLoop(render);
-}
-
-function render() {
-  renderer.render(scene, camera);
+// ORDER
+function placeOrder() {
+  alert(name + " added! Proceed to cart.");
+  window.location.href = "cart.html";
 }
 
 </script>
