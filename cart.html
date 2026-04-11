@@ -119,6 +119,10 @@ cart.forEach(item => {
   }
 });
 
+  function goToMenu() {
+  window.history.back();
+}
+  
 // 🔥 COUNT
 function updateCartCount() {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
