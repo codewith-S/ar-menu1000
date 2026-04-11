@@ -107,8 +107,15 @@ cart.forEach(item => {
   }
 });
 
+  function updateCartCount() {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  document.getElementById("cartCount").innerText = "Items: " + cart.length;
+}
+
 // 🔄 Render Cart
 function renderCart() {
+  renderCart();
+updateCartCount(); // 🔥 ADD THIS
   let html = "";
   let total = 0;
   let count = 0;
@@ -173,7 +180,6 @@ function removeItem(name) {
   updateStorage();
 }
 
-// 🔄 Sync with localStorage
 function updateStorage() {
   let newCart = [];
 
@@ -184,9 +190,11 @@ function updateStorage() {
   });
 
   localStorage.setItem("cart", JSON.stringify(newCart));
+
+  updateCartCount(); // 🔥 ADD THIS
   renderCart();
 }
-
+  
 // 🗑️ Clear Cart
 function clearCart() {
   if (confirm("Clear entire cart?")) {
