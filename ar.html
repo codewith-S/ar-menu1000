@@ -1,177 +1,89 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AR View</title>
+  <title>WebXR AR</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/webxr/ARButton.js"></script>
 
+  <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #27ae60, #2ecc71);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      color: white;
-      text-align: center;
       overflow: hidden;
+      font-family: sans-serif;
     }
 
-    .container {
-      max-width: 420px;
-      width: 90%;
-      z-index: 1;
-    }
-
-    h2 {
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-
-    .info {
-      opacity: 0.9;
-      font-size: 15px;
-    }
-
-    .btn {
-      margin-top: 18px;
-      padding: 18px;
-      border-radius: 14px;
-      border: none;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
+    #overlay {
+      position: absolute;
+      top: 20px;
       width: 100%;
-      transition: 0.3s;
-    }
-
-    .ar-btn {
-      background: white;
-      color: #27ae60;
-    }
-
-    .ar-btn:hover {
-      transform: scale(1.03);
-    }
-
-    .order-btn {
-      background: black;
+      text-align: center;
       color: white;
+      z-index: 2;
     }
-
-    /* 🔥 Loader Overlay */
-    .loader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.7);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      z-index: 10;
-    }
-
-    .loader p {
-      margin-top: 10px;
-      font-size: 16px;
-    }
-
-    .spinner {
-      width: 50px;
-      height: 50px;
-      border: 5px solid white;
-      border-top: 5px solid transparent;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
   </style>
 </head>
 
 <body>
 
-<div class="container">
-
-  <h2 id="title">Loading...</h2>
-  <p class="info">Move your phone to detect surface</p>
-
-  <button class="btn ar-btn" onclick="launchAR()">
-    🚀 View in AR
-  </button>
-
-  <button class="btn order-btn" onclick="placeOrder()">
-    🛒 Order Now
-  </button>
-
-</div>
-
-<!-- 🔥 LOADER -->
-<div class="loader" id="loader">
-  <div class="spinner"></div>
-  <p>Launching AR...</p>
-</div>
+<div id="overlay">Move phone to detect surface</div>
 
 <script>
 
-// GET PARAMETERS
 const params = new URLSearchParams(window.location.search);
+const modelUrl = params.get("model");
 
-const model = params.get("model");
-const name = params.get("name");
+let camera, scene, renderer;
+let controller;
 
-document.getElementById("title").innerText = name || "Item";
+init();
+animate();
 
-// 🚀 MARKERLESS AR (PREMIUM FLOW)
-function launchAR() {
+function init() {
 
-  const loader = document.getElementById("loader");
-  loader.style.display = "flex";
+  scene = new THREE.Scene();
 
-const modelUrl = model;
-  
-  const isAndroid = /Android/i.test(navigator.userAgent);
-  const isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.01, 20);
 
-  setTimeout(() => {
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.xr.enabled = true;
 
-    if (isAndroid) {
+  document.body.appendChild(renderer.domElement);
 
-      // 🔥 Scene Viewer with surface detection
-      const url = `https://arvr.google.com/scene-viewer/1.0?file=${modelUrl}&mode=ar_only&resizable=true`;
+  // AR Button
+  document.body.appendChild(ARButton.createButton(renderer, {
+    requiredFeatures: ['hit-test']
+  }));
 
-      window.location.href = url;
+  // Light
+  const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+  scene.add(light);
 
-    } else if (isiOS) {
+  // Load Model
+  const loader = new THREE.GLTFLoader();
 
-      alert("iPhone requires USDZ model");
+  loader.load(modelUrl, function(gltf) {
 
-    } else {
+    const model = gltf.scene;
+    model.scale.set(0.3, 0.3, 0.3);
+    model.position.set(0, 0, -1);
 
-      alert("AR not supported on this device");
+    scene.add(model);
 
-    }
-
-  }, 1200); // smooth delay
+  });
 
 }
 
-// 🛒 ORDER
-function placeOrder() {
-  alert(name + " added! Proceed to cart.");
-  window.location.href = "cart.html";
+function animate() {
+  renderer.setAnimationLoop(render);
+}
+
+function render() {
+  renderer.render(scene, camera);
 }
 
 </script>
