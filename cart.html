@@ -1,8 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cart</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #2ecc71;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      color: white;
+    }
+
+    .cart-item {
+      background: white;
+      margin: 10px auto;
+      padding: 10px;
+      border-radius: 10px;
+      width: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+    }
+
+    .controls button {
+      padding: 5px 10px;
+      margin: 2px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .remove {
+      background: red;
+      color: white;
+    }
+
+    .qty {
+      font-weight: bold;
+    }
+
+    .checkout-btn {
+      margin-top: 10px;
+      padding: 15px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background: white;
+      cursor: pointer;
+    }
+
+    .clear-btn {
+      margin-top: 10px;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: #e74c3c;
+      color: white;
+      cursor: pointer;
+    }
+
+    .cart-count {
+      color: white;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🛒 Your Cart</h1>
+
+<h3 class="cart-count" id="cartCount"></h3>
+
+<div id="cartItems"></div>
+
+<h2 id="total"></h2>
+
+<button class="checkout-btn" onclick="checkout()">Proceed to Payment</button>
+
+<button class="clear-btn" id="clearBtn" onclick="clearCart()">🗑️ Clear Cart</button>
+
 <script>
 
+// LOAD CART
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-// Convert cart into quantity system
+// MAP
 let cartMap = {};
 
 cart.forEach(item => {
@@ -13,13 +108,18 @@ cart.forEach(item => {
   }
 });
 
-// 🔥 Update cart count (single source of truth)
+// 🔥 COUNT
 function updateCartCount() {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   document.getElementById("cartCount").innerText = "Items: " + cart.length;
 }
 
-// 🔄 Render Cart
+// 🔥 SHOW/HIDE CLEAR BUTTON
+function toggleClearButton(isEmpty) {
+  document.getElementById("clearBtn").style.display = isEmpty ? "none" : "inline-block";
+}
+
+// 🔄 RENDER
 function renderCart() {
 
   let html = "";
@@ -33,7 +133,9 @@ function renderCart() {
 
     document.getElementById("total").innerText = "Total: ₹0";
 
-    updateCartCount(); // ✅ keep count visible
+    updateCartCount();
+    toggleClearButton(true); // 🔥 hide button
+
     return;
   }
 
@@ -63,16 +165,17 @@ function renderCart() {
   document.getElementById("cartItems").innerHTML = html;
   document.getElementById("total").innerText = "Total: ₹" + total;
 
-  updateCartCount(); // ✅ only here
+  updateCartCount();
+  toggleClearButton(false); // 🔥 show button
 }
 
-// ➕ Increase
+// ➕
 function increase(name) {
   cartMap[name].qty++;
   updateStorage();
 }
 
-// ➖ Decrease
+// ➖
 function decrease(name) {
   if (cartMap[name].qty > 1) {
     cartMap[name].qty--;
@@ -82,13 +185,13 @@ function decrease(name) {
   updateStorage();
 }
 
-// ❌ Remove
+// ❌
 function removeItem(name) {
   delete cartMap[name];
   updateStorage();
 }
 
-// 🔄 Sync with storage
+// 🔄 STORAGE
 function updateStorage() {
   let newCart = [];
 
@@ -99,11 +202,10 @@ function updateStorage() {
   });
 
   localStorage.setItem("cart", JSON.stringify(newCart));
-
-  renderCart(); // ✅ this will update count too
+  renderCart();
 }
 
-// 🗑️ Clear Cart
+// 🗑️ CLEAR
 function clearCart() {
   if (confirm("Clear entire cart?")) {
     localStorage.removeItem("cart");
@@ -112,12 +214,15 @@ function clearCart() {
   }
 }
 
-// 💳 Checkout
+// 💳
 function checkout() {
   window.location.href = "payment.html";
 }
 
-// INITIAL LOAD
+// INIT
 renderCart();
 
 </script>
+
+</body>
+</html>
